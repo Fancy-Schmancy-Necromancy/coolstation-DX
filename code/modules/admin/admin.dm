@@ -1841,7 +1841,8 @@ var/global/noir = 0
 				return
 			var/mob/M = locate(href_list["target"])
 			if (!M) return
-			if (alert("Make [M] a blob?", "Make Blob", "Yes", "No") == "Yes")
+			var/how_much = alert("Make [M] a blob?", "Make Blob", "All the Way", "Just the Power", "No")
+			if (how_much == "All the Way")
 				var/mob/B = M.blobize()
 				if (B)
 					if (B.mind)
@@ -1865,6 +1866,21 @@ var/global/noir = 0
 								newname = strip_html(newname) + " the Blob"
 								B.real_name = newname
 								B.name = newname
+			else if (how_much == "Just the Power")
+				M.add_ability_holder(/datum/abilityHolder/blob)
+				message_admins("[key_name(usr)] gave [key_name(M)] blob powers.")
+				logTheThing("admin", usr, M, "gave [constructTarget(M,"admin")] blob powers.")
+				if (M.mind)
+					M.show_message(SPAN_ALERT("You've been struck by a stray Higgs Blobson! You feel the need to spread the Blob across the station!"))
+					M.mind.special_role = "blob"
+					ticker.mode.bestow_objective(M.mind,/datum/objective/specialist/blob)
+					var/i = 1
+					for (var/datum/objective/Obj in M.mind.objectives)
+						boutput(M, "<b>Objective #[i]</b>: [Obj.explanation_text]")
+						i++
+					ticker.mode.Agimmicks += M.mind
+					M.antagonist_overlay_refresh(1, 0)
+
 
 		if ("makemacho")
 			if( src.level < LEVEL_PA )
@@ -2957,7 +2973,7 @@ var/global/noir = 0
 
 					if ("yeolde")
 						if (src.level >= LEVEL_PA)
-							message_admins("[key_name(usr)] began replacing all Z1 airlocks with wooden doors.")
+							message_admins("[key_name(usr)] began replacing all Z1 .optionGroup.")
 							for (var/obj/machinery/door/D in by_type[/obj/machinery/door])
 								if (atom_emergency_stop)
 									message_admins("[key_name(usr)]'s command to replace all Z1 airlocks with wooden doors was terminated due to the atom emerygency stop!")
@@ -4192,7 +4208,7 @@ var/global/noir = 0
 
 	dat += {"<style>
 				a {text-decoration:none}
-				.optionGroup {padding:5px; margin-bottom:8px; border:1px solid black}
+				.optionGroup {padding:5px; margin-bottom:8px; border:1px solid black; background: #dad8b6; color: #6D5D03}
 				.optionGroup .title {display:block; color:white; background:black; padding: 2px 5px; margin: -5px -5px 2px -5px}
 			</style>"}
 

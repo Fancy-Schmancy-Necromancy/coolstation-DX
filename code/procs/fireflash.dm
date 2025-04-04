@@ -1,9 +1,9 @@
 #define FIREFLASH_HOTSPOT_TIME 2 SECONDS
 
-/proc/fireflash(atom/center, radius, ignoreUnreachable)
-	tfireflash(center, radius, rand(2800,3200), ignoreUnreachable)
+/proc/fireflash(atom/center, radius, ignoreUnreachable, energy)
+	tfireflash(center, radius, rand(2800,3200), ignoreUnreachable, energy)
 
-/proc/tfireflash(atom/center, radius, temp, ignoreUnreachable)
+/proc/tfireflash(atom/center, radius, temp, ignoreUnreachable, energy)
 	if (locate(/obj/blob/firewall) in center)
 		return
 	for(var/turf/T in range(radius,get_turf(center)))
@@ -72,13 +72,14 @@
 						C.check_health()
 				LAGCHECK(LAG_REALTIME)
 
-/proc/fireflash_s(atom/center, radius, temp, falloff)
+/proc/fireflash_s(atom/center, radius, temp, falloff, energy)
 	if (locate(/obj/blob/firewall) in center)
 		return list()
 	if (temp < T0C + 60)
 		return list()
 	var/list/open = list()
 	var/list/affected = list()
+	var/list/obj/hotspot/fireflash/affected_hotspots = list()
 	var/list/closed = list()
 	var/turf/Ce = get_turf(center)
 	var/max_dist = radius
@@ -112,24 +113,12 @@
 			hotspot = new(FIREFLASH_HOTSPOT_TIME)
 			hotspot.temperature = falloff_affected_temp
 			hotspot.set_loc(T)
+		affected_hotspots += hotspot
 
 		hotspot.volume = 400
 		hotspot.set_real_color()
 		T.hotspot_expose(hotspot.temperature, hotspot.volume)
 
-		/*else if (existing_hotspot.temperature < temp - dist * falloff)
-			expose_temp = (temp - dist * falloff) - existing_hotspot.temperature
-			prev_temp = existing_hotspot.temperature
-			if (expose_temp > prev_temp * 3)
-				need_expose = 1
-			existing_hotspot.temperature = temp - dist * falloff
-
-		affected[T] = existing_hotspot.temperature
-		if (expose_temp)
-			T.hotspot_expose(expose_temp, existing_hotspot.volume)*/
-/* // experimental thing to let temporary hotspots affect atmos
-			existing_hotspot.perform_exposure()
-*/
 		if(istype(T, /turf/floor)) T:burn_tile()
 		for (var/mob/living/L in T)
 			L.update_burning(min(55, max(0, falloff_affected_temp - 100 / 550)))
@@ -161,14 +150,29 @@
 						open[link] = target_dist
 				else
 					open[link] = target_dist
+		var/datum/component/updraft/up = T.GetComponent(/datum/component/updraft)
+		if(up)
+			var/turf/link = up.TargetTurf
+			if (!link)
+				continue
+			var/target_dist = dist + 1
+			if (!(link in closed))
+				if (link in open)
+					if (open[link] > target_dist)
+						open[link] = target_dist
+				else
+					open[link] = target_dist
 
 		LAGCHECK(LAG_REALTIME)
 
+	var/hotspot_energy = energy / length(affected_hotspots)
+	for(var/obj/hotspot/fireflash/hotspot in affected_hotspots)
+		hotspot.thermal_energy += hotspot_energy
 	return affected
 
 
-/proc/fireflash_sm(atom/center, radius, temp, falloff, capped = 1, bypass_RNG = 0)
-	var/list/affected = fireflash_s(center, radius, temp, falloff)
+/proc/fireflash_sm(atom/center, radius, temp, falloff, capped = 1, bypass_RNG = 0, energy)
+	var/list/affected = fireflash_s(center, radius, temp, falloff, energy)
 	for (var/turf/T in affected)
 		if (issimulatedturf(T) && !T.loc:sanctuary)
 			var/mytemp = affected[T]
@@ -193,11 +197,14 @@ var/list/obj/hotspot/fireflash/fireflashes = list()
 	layer = FIREFLASH_LAYER
 	plane = PLANE_DEFAULT
 	var/time_to_die
+	var/thermal_energy = 0
 	cleanup_active = FALSE
+	event_handler_flags = CAN_UPDRAFT
 
-	New(var/time_to_live = 1.5 SECONDS)
+	New(var/time_to_live = 1.5 SECONDS, var/energy = 0)
 		..()
 		src.time_to_die = world.time + time_to_live
+		src.thermal_energy = energy
 		fireflashes += src
 
 	process(list/turf/possible_spread)
@@ -205,13 +212,16 @@ var/list/obj/hotspot/fireflash/fireflashes = list()
 			just_spawned = 0
 			return 0
 
-		if(world.time > src.time_to_die)
+		var/turf/floor/location = loc
+		if (!istype(location) || (locate(/obj/fire_foam) in location))
 			src.dispose()
 			qdel(src)
 			return 0
 
-		var/turf/floor/location = loc
-		if (!istype(location) || (locate(/obj/fire_foam) in location))
+		if(src.thermal_energy)
+			impart_energy(location)
+
+		if(world.time > src.time_to_die)
 			src.dispose()
 			qdel(src)
 			return 0
@@ -231,6 +241,24 @@ var/list/obj/hotspot/fireflash/fireflashes = list()
 
 		return 1
 
+	set_loc(newloc)
+		var/obj/hotspot/fireflash/hotspot = locate(/obj/hotspot/fireflash) in newloc
+		if (hotspot)
+			hotspot.time_to_die = max(hotspot.time_to_die,src.time_to_die) + FIREFLASH_HOTSPOT_TIME
+			hotspot.temperature = max(hotspot.temperature,src.temperature)
+			qdel(src)
+			return
+		. = ..()
+
 	disposing()
 		fireflashes -= src
 		..()
+
+	proc/impart_energy(var/turf/location)
+		if (!location?.air)
+			qdel(src)
+			return
+
+		location.air.temperature += src.thermal_energy / HEAT_CAPACITY(location.air) * 0.6
+
+		src.thermal_energy = src.thermal_energy * 0.4
