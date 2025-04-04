@@ -257,7 +257,7 @@ proc/build_syndi_buylist_cache()
 	blockedmode = list(/datum/game_mode/revolution)
 
 /datum/syndicate_buylist/utility/omnitool
-	name = "Syndicate Omnitool"
+	name = "FOSS Omnitool"
 	item = /obj/item/tool/omnitool/syndicate
 	cost = 1 //2
 	desc = "A miniature set of tools that you can hide in your clothing and retrieve with the flex emote. Has knife and weldingtool modes."

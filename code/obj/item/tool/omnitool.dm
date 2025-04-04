@@ -1,6 +1,6 @@
 /obj/item/tool/omnitool
-	name = "omnitool"
-	desc = "Multiple tools in one, like an old-fashioned Swiss army knife. Truly, we are living in the future."
+	name = "Foss OmniTool"
+	desc = "A FOSS manufactured Swiss Army Knife, somehow containing many different tools useful for subterfuge. There's a compass on the bottom of the handle too!"
 	icon = 'icons/obj/items/tools/tools.dmi'
 	inhand_image_icon = 'icons/mob/inhand/tools/omnitool.dmi' //kinda a lot of inhands for one thing, this can stay for now
 	uses_multiple_icon_states = 1
