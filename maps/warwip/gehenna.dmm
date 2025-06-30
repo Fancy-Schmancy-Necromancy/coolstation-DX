@@ -3306,10 +3306,7 @@
 	},
 /area/space)
 "jV" = (
-/obj/stool/chair/green{
-	dir = 4
-	},
-/turf/floor/black,
+/turf/space,
 /area/space)
 "jW" = (
 /obj/machinery/computer/cloning{
@@ -3515,6 +3512,15 @@
 	dir = 1
 	},
 /area/gehenna)
+"LN" = (
+/obj,
+/obj,
+/turf/space/gehenna/desert,
+/area/gehenna/wasteland)
+"Qn" = (
+/obj,
+/turf/space/gehenna/desert,
+/area/gehenna/wasteland)
 
 (1,1,1) = {"
 aa
@@ -30612,8 +30618,8 @@ gn
 gn
 gn
 gn
-jV
 kc
+jV
 iW
 fT
 fw
@@ -36298,7 +36304,7 @@ aa
 aa
 aa
 aa
-aa
+Qn
 aa
 aa
 eP
@@ -40845,7 +40851,7 @@ aa
 aa
 aa
 aa
-aa
+LN
 aa
 aa
 aa

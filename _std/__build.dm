@@ -31,7 +31,7 @@ o+`        `-` ``..-:yooos-..----------..`
 
 //////////// OPTIONS TO GO FAST
 
-//#define IM_REALLY_IN_A_FUCKING_HURRY_HERE 1  		// Skip setup for atmos, Z5, don't show changelogs, skip pregame lobby
+#define IM_REALLY_IN_A_FUCKING_HURRY_HERE 1  		// Skip setup for atmos, Z5, don't show changelogs, skip pregame lobby
 //#define GOTTA_GO_FAST_BUT_ZLEVELS_TOO_SLOW 1		// Only include the map Atlas, no other zlevels. Boots way faster
 #define Z_LOG_ENABLE 1  							// Enable additional world.log logging
 
@@ -92,7 +92,7 @@ o+`        `-` ``..-:yooos-..----------..`
 //////////// MAP OVERRIDES
 
 //---------------------- Maps that are being maintained ------------------------------//
-//#define MAP_OVERRIDE_BAYOUBEND 	  //low to midpop scrapping map by Klushy225
+#define MAP_OVERRIDE_BAYOUBEND 		//DO NOT RUN THIS RIGHT NOW!!! low to midpop scrapping map by Klushy225
 //#define MAP_OVERRIDE_BOBMAP 			//"to be renamed" map by ReginaldHJ
 //#define MAP_OVERRIDE_CHUNK				// Warcrimes tiny map (not Atlas levels of tiny, but usable tiny)
 //#define MAP_OVERRIDE_DONUT2 			// Un-Updated Donut2
