@@ -746,7 +746,7 @@ var/zapLimiter = 0
 	t += "<BR><HR><A href='byond://?src=\ref[src];close=1'>Close</A>"
 
 	t += "</TT>"
-	user.Browse(t, "window=apc")
+	user.Browse(dat, "window=apc;size=1000x700;titlebar=0;can_resize=0;border=0")
 	onclose(user, "apc")
 	return
 

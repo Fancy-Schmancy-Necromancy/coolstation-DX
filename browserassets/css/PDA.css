@@ -1,0 +1,80 @@
+body
+		{
+			background: #030602;
+			font-family: "Not Jam Mono Clean 16";
+			font-size: 12pt;
+			letter-spacing: 1px;
+			padding: 5px;
+		}
+
+		@font-face {
+				font-family: "Not Jam Mono Clean 16";
+				font-style: normal;
+				src: 'browserassets/css/fonts/Not Jam Mono Clean 16.ttf'
+			}
+			html { background-color: #0e0c05;
+					font-family: "Not Jam Mono Clean 16";
+					font-size: 16pt;
+					line-height: 1;
+					animation-duration: 0.01s;
+					animation-name: textflicker;
+					animation-iteration-count: infinite;
+					animation-direction: alternate;
+
+			/**CSS for a CRT filter */
+			    .crt::before {
+				content: " ";
+				display: block;
+				position: fixed;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				opacity: 0.1;
+				background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+				z-index: 2;
+				background-size: 100% 2px, 3px 100%;
+				pointer-events: none;
+			}
+			@keyframes flicker {
+				0% {
+				opacity: 0.05;
+				}
+				5% {
+				opacity: 0.01;
+				}
+				10% {
+				opacity:0.05;
+				}
+				15% {
+				opacity: 0.001;
+				}
+				20% {
+				opacity: 0.05;
+				}
+				25% {
+				opacity: 0.005;
+				}
+				30% {
+				opacity: 0.05;
+				}
+				35% {
+				opacity:0.05;
+				}
+			}
+
+			.crt::after {
+				content: " ";
+				display: block;
+				position: fixed;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				background: rgba(18, 16, 16, 0.1);
+				opacity: 0.01;
+				z-index: 2;
+				pointer-events: none;
+				animation: flicker 0.15s infinite;
+			}
+	}
