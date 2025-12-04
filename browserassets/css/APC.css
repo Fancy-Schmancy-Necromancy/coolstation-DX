@@ -1,0 +1,21 @@
+body{
+	font-family: 'DSEG14ClassicMini';
+	font-size: 12pt;
+}
+
+@font-face {
+  font-family: 'DSEG14ClassicMini';
+  font-style: normal;
+  src: 'browserassets/css/fonts/DSEG14ClassicMini-Regular.woff';
+
+}
+
+
+html{
+	font-family: 'DSEG14ClassicMini';
+	font-size: 12pt;
+}
+.thingy{
+	font-family:'DSEG14ClassicMini';
+	font-style: normal;
+}

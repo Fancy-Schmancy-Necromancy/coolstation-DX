@@ -653,15 +653,16 @@ var/zapLimiter = 0
 		return
 
 	src.add_dialog(user)
-	var/t = "<TT><B>Area Power Controller</B> ([area.name])<HR>"
+	var/t ={"<head><link rel="stylesheet" type="text/css" href="[resource("css/APC.css")]" /></head><body>"}
+	t += "<B>Area Power Controller</B> ([area.name])<HR>"
 
 	if (!area.requires_power)
 		t += "<I>This APC has no configurable settings.</I>"
 	else if((locked || (setup_networkapc > 1)) && !can_access_remotely(user))
 		if (setup_networkapc < 2)
-			t += "<I>(Swipe ID card to unlock inteface.)</I><BR>"
+			t += "<I>(Swipe ID card to unlock interface.)</I><BR>"
 		else
-			t += "Host Connection: <B>[src.host_id ? "<font color=green>OK</font>" : "<font color=red>NONE</font>"]</B><BR>"
+			t += "<div class = 'thingy'>Host Connection: <B>[src.host_id ? "<font color=green>OK</font>" : "<font color=red>NONE</font>"]</B><BR></div>"
 		t += "Main breaker : <B>[operating ? "On" : "Off"]</B><BR>"
 		t += "External power : <B>[ main_status ? (main_status ==2 ? "<FONT COLOR=#004000>Good</FONT>" : "<FONT COLOR=#D09000>Low</FONT>") : "<FONT COLOR=#F00000>None</FONT>"]</B><BR>"
 		t += "Power cell: <B>[cell ? "[round(cell.percent())]%" : "<FONT COLOR=red>Not connected.</FONT>"]</B>"
@@ -669,7 +670,7 @@ var/zapLimiter = 0
 			t += " ([charging ? ( charging == 1 ? "Charging" : "Fully charged" ) : chargecount ? "Performing self-test" : "Not charging"])"
 			t += " ([chargemode ? "Auto" : "Off"])"
 
-		t += "<BR><HR>Power channels<BR><PRE>"
+		t += "<BR><HR>Power channels<BR>"
 
 		var/list/L = list ("Off","Off (Auto)", "On", "On (Auto)")
 
@@ -677,7 +678,7 @@ var/zapLimiter = 0
 		t += "Lighting:     [add_lspace(lastused_light, 6)] W : <B>[L[lighting+1]]</B><BR>"
 		t += "Environmental:[add_lspace(lastused_environ, 6)] W : <B>[L[environ+1]]</B><BR>"
 
-		t += "<BR>Total load: [lastused_light + lastused_equip + lastused_environ] W</PRE>"
+		t += "<BR>Total load: [lastused_light + lastused_equip + lastused_environ] W"
 		t += "<HR>Cover lock: <B>[coverlocked ? "Engaged" : "Disengaged"]</B>"
 
 	else
@@ -693,7 +694,7 @@ var/zapLimiter = 0
 		else
 			t += "Power cell: <B><FONT COLOR=red>Not connected.</FONT></B>"
 
-		t += "<BR><HR>Power channels<BR><PRE>"
+		t += "<BR><HR>Power channels<BR>"
 
 
 		t += "Equipment:    [add_lspace(lastused_equip, 6)] W : "
@@ -735,7 +736,7 @@ var/zapLimiter = 0
 
 
 
-		t += "<BR>Total load: [lastused_light + lastused_equip + lastused_environ] W</PRE>"
+		t += "<BR>Total load: [lastused_light + lastused_equip + lastused_environ] W"
 		t += "<HR>Cover lock: [coverlocked ? "<B><A href='byond://?src=\ref[src];lock=1'>Engaged</A></B>" : "<B><A href='byond://?src=\ref[src];lock=1'>Disengaged</A></B>"]"
 
 
@@ -745,8 +746,7 @@ var/zapLimiter = 0
 
 	t += "<BR><HR><A href='byond://?src=\ref[src];close=1'>Close</A>"
 
-	t += "</TT>"
-	user.Browse(t, "window=apc")
+	user.Browse(t, "window=apc;size=1000x700;titlebar=0;can_resize=0;border=0")
 	onclose(user, "apc")
 	return
 
