@@ -5,8 +5,12 @@ body{
 
 @font-face {
   font-family: 'DSEG14ClassicMini';
+  src:
+		url('browserassets/css/fonts/DSEG14ClassicMini-Regular.woff') format('woff'),
+		url('browserassets/css/fonts/DSEG14ClassicMini-Regular.woff2') format('woff2'),
+		url('browserassets/css/fonts/DSEG14ClassicMini-Regular.ttf') format('ttf');
+	font-weight: normal;
   font-style: normal;
-  src: 'browserassets/css/fonts/DSEG14ClassicMini-Regular.woff';
 
 }
 
