@@ -5,7 +5,8 @@ body{
 
 @font-face {
   	font-family: 'DSEG14Classic';
- 	src: 'browserassets/css/fonts/DSEG14Classic-Regular.woff'
+ 	src: 'browserassets/css/fonts/DSEG14Classic-Regular.ttf';
+	font-style: normal;
 }
 
 
