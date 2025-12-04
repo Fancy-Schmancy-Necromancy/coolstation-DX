@@ -14,7 +14,7 @@ var/global/list/queue_stat_list = list()
 #endif
 
 // dumb, bad
-var/list/extra_resources = list('code/pressstart2p.ttf', 'ibmvga9.ttf', 'xfont.ttf', 'browserassets/css/fonts/Not Jam Mono Clean 16.ttf', 'browserassets/css/fonts/DSEG14ClassicMini-Regular.woff')
+var/list/extra_resources = list('code/pressstart2p.ttf', 'ibmvga9.ttf', 'xfont.ttf', 'browserassets/css/fonts/Not Jam Mono Clean 16.ttf', 'browserassets/css/fonts/DSEG14Classic-Regular.woff')
 // Press Start 2P - 6px
 // PxPlus IBM VGA9 - 12px
 // Not Jam Mono Clean - 16px

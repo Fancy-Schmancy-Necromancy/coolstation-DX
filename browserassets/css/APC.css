@@ -1,25 +1,20 @@
 body{
-	font-family: 'DSEG14ClassicMini';
+	font-family: 'DSEG14Classic';
 	font-size: 12pt;
 }
 
 @font-face {
-  font-family: 'DSEG14ClassicMini';
-  src:
-		url('browserassets/css/fonts/DSEG14ClassicMini-Regular.woff') format('woff'),
-		url('browserassets/css/fonts/DSEG14ClassicMini-Regular.woff2') format('woff2'),
-		url('browserassets/css/fonts/DSEG14ClassicMini-Regular.ttf') format('ttf');
-	font-weight: normal;
-  font-style: normal;
-
+  	font-family: 'DSEG14Classic';
+ 	src: 'browserassets/css/fonts/DSEG14Classic-Regular.woff'
 }
 
 
 html{
-	font-family: 'DSEG14ClassicMini';
+	font-family: 'DSEG14Classic';
 	font-size: 12pt;
+	color: blue;
 }
 .thingy{
-	font-family:'DSEG14ClassicMini';
+	font-family:'DSEG14Classic';
 	font-style: normal;
 }
