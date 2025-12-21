@@ -1,21 +1,11 @@
-body{
-	font-family: 'DSEG14Classic';
-	font-size: 12pt;
-}
 
 @font-face {
-  	font-family: 'DSEG14Classic';
- 	src: 'browserassets/css/fonts/DSEG14Classic-Regular.ttf';
+  	font-family: "DSEG14 Classic";
 	font-style: normal;
-}
+ 	src: "browserassets/css/fonts/DSEG/DSEG14Classic-Regular.ttf";
 
-
-html{
-	font-family: 'DSEG14Classic';
-	font-size: 12pt;
-	color: blue;
 }
-.thingy{
-	font-family:'DSEG14Classic';
-	font-style: normal;
+@font-face{
+  font-family: 'Routed Gothic';
+  src: local('browserassets/css/fonts/Gothic/routed-gothic.ttf');
 }
