@@ -253,6 +253,12 @@
 		..()
 		BLOCK_SETUP(BLOCK_BOOK)
 
+/obj/item/storage/fraudKit
+	name = "Bureaucracy Kit"
+	desc = "Taking down the station one signiture at a time."
+	icon_state = "box"
+
+
 /obj/item/storage/football
 	name = "space-american football kit"
 	desc = "This kit contains everything you need to become a great football player. Wearing all of the equipment inside will grant you the ability to rush down and tackle anyone who stands in your way!"

@@ -1283,6 +1283,9 @@ This is basically useless for anyone but miners.
 	desc = "This kit contains everything you need to become a great football player! Wearing all of the equipment inside will grant you the ability to rush down and tackle foes. You'll also make amazing throws!"
 	blockedmode = list(/datum/game_mode/spy, /datum/game_mode/revolution)
 
+
+/datum/syndicate_buylist/traitor/bureaucracykit
+	name = /obj/item
 /*
 /datum/syndicate_buylist/traitor/safari
 	name = "Safari Kit"
