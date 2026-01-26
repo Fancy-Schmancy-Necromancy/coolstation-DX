@@ -194,7 +194,7 @@ ABSTRACT_TYPE(/obj/item/clothing/gloves)
 		if(ismob(user))
 			var/mob/M = user
 			specialoverride.pixelaction(target,params,M)
-			M.next_click = world.time+M.combat_click_delay
+			M.next_click = world.time + M.combat_click_delay * GET_COMBAT_CLICK_DELAY_SCALE(M)
 			return 1
 
 
@@ -219,7 +219,8 @@ ABSTRACT_TYPE(/obj/item/clothing/gloves)
 	icon_state = "fgloves"
 	item_state = "finger-"
 	hide_prints = 0
-		setupProperties()
+
+	setupProperties()
 		..()
 		setProperty("conductivity", 1)
 
@@ -238,16 +239,26 @@ ABSTRACT_TYPE(/obj/item/clothing/gloves)
 /obj/item/clothing/gloves/black/attackby(obj/item/W, mob/user)
 	if (istool(W, TOOL_CUTTING | TOOL_SNIPPING))
 		user.visible_message("<span class='notice'>[user] cuts off the fingertips from [src].</span>")
+		playsound(src.loc, "sound/items/Scissor.ogg", 50, 1, SOUND_RANGE_SMALL)
 		if(src.loc == user)
 			user.u_equip(src)
+			if (ishuman(user))
+				var/mob/living/carbon/human/H = user
+				if(src == H.gloves)
+					H.force_equip(new /obj/item/clothing/gloves/fingerless, H.slot_gloves)
+					qdel(src)
+					return
+
 		qdel(src)
 		user.put_in_hand_or_drop(new /obj/item/clothing/gloves/fingerless)
 	else . = ..()
+
 /obj/item/clothing/gloves/cyborg
 	desc = "beep boop borp"
 	name = "cyborg gloves"
 	icon_state = "black"
 	item_state = "r_hands"
+
 	setupProperties()
 		..()
 		setProperty("conductivity", 1)
@@ -260,16 +271,27 @@ ABSTRACT_TYPE(/obj/item/clothing/gloves)
 	desc = "Thin gloves that offer minimal protection."
 	protective_temperature = 310
 	scramble_prints = 1
+
 	setupProperties()
 		..()
 		setProperty("conductivity", 0.3)
+
 	attackby(obj/item/W as obj, mob/user as mob)
-		if (istool(W, TOOL_SNIPPING))
-			boutput(user, "You snip off the tips of your latex gloves. You feel really cool all of a sudden.")
-			playsound(src.loc, "sound/items/Scissor.ogg", 50, 1, -6)
-			var/obj/item/clothing/gloves/latex/fingerless/craft = new()
-			craft.set_loc(get_turf(src))
+		if (istool(W, TOOL_CUTTING | TOOL_SNIPPING))
+			user.visible_message("<span class='notice'>[user] cuts off the fingertips from [src]. What an asshole.</span>", "<span class='notice'>[user] snip off the fingertips from [src]. You feel really badass.</span>")
+			playsound(src.loc, "sound/items/Scissor.ogg", 50, 1, SOUND_RANGE_SMALL)
+			if(src.loc == user)
+				user.u_equip(src)
+				if (ishuman(user))
+					var/mob/living/carbon/human/H = user
+					if(src == H.gloves)
+						H.force_equip(new /obj/item/clothing/gloves/latex/fingerless, H.slot_gloves)
+						qdel(src)
+						return
+
 			qdel(src)
+			user.put_in_hand_or_drop(new /obj/item/clothing/gloves/latex/fingerless)
+		else . = ..()
 
 
 
@@ -305,7 +327,7 @@ ABSTRACT_TYPE(/obj/item/clothing/gloves)
 /obj/item/clothing/gloves/crafted
 	name = "gloves"
 	icon_state = "latex"
-	item_state = "lglosves"
+	item_state = "lgloves"
 	desc = "Custom made gloves."
 	scramble_prints = 1
 
@@ -502,7 +524,7 @@ ABSTRACT_TYPE(/obj/item/clothing/gloves)
 			..()
 		for(var/turf/T in range(1, user))
 			for(var/obj/cable/C in T.contents) //Needed because cables have invisibility 101. Making them disappear from most LISTS.
-				netnum = C.get_netnumber()
+				netnum = C.netnum
 				break
 
 		if(get_dist(user, target) > 1 && !user:equipped())
