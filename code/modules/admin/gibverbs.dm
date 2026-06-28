@@ -485,3 +485,88 @@
 			qdel(src)
 		else
 			process()
+
+
+/client/proc/cmd_admin_tysongibPink(mob/tysontarget as mob in world)
+	SET_ADMIN_CAT(ADMIN_CAT_NONE)
+	set name = "Pink Gib"
+	set popup_menu = 0
+	var/startx = 1
+	var/starty = 1
+	if(!isadmin(src))
+		boutput(src, "Only administrators may use this command.")
+		return
+
+	var/speed = input(usr,"How fast is PinkPanthersss? Lower is faster.","speed","5") as num
+	if(!speed)
+		return
+
+	boutput(tysontarget, "Uh oh.")
+	tysontarget << sound('sound/misc/funny/pink/pink1.ogg')
+	startx = tysontarget.x - rand(-11, 11)
+	starty = tysontarget.y - rand(-11, 11)
+	var/turf/pickedstart = locate(startx, starty, tysontarget.z)
+	var/obj/gibtyson/Q = new /obj/gibtyson(pickedstart)
+	Q.tysontarget2 = tysontarget
+	Q.callster = usr
+	Q.tysonspeed = speed
+
+/obj/gibpink/
+	name = "PinkPanthersss"
+	desc = "She's really glad to meet you."
+	icon = 'icons/misc/pinkPantherss.dmi'
+	icon_state = "idle"
+	layer = EFFECTS_LAYER_2
+	density = 1
+	anchored = UNANCHORED
+	var/mob/tysontarget2 = null
+	var/tysonspeed = 1
+	var/mob/callster = null
+
+	New()
+		SPAWN_DBG(0) process()
+		..()
+
+	Bump(M as turf|obj|mob)
+		M:density = 0
+		SPAWN_DBG(0.4 SECONDS)
+			M:density = 1
+		sleep(0.1 SECONDS)
+		var/turf/T = get_turf(M)
+		src.x = T.x
+		src.y = T.y
+
+	proc/process()
+		while (!disposed)
+			if (get_dist(src, src.tysontarget2) <= 1)
+				for(var/mob/O in AIviewers(src, null))
+					O.show_message("<span class='alert'><B>[src]</B> punches [tysontarget2]!</span>", 1)
+				tysontarget2.changeStatus("weakened", 10 SECONDS)
+				tysontarget2.changeStatus("stunned", 10 SECONDS)
+				playsound(src.loc, 'sound/impact_sounds/generic_hit_3.ogg', 50, 1, SOUND_RANGE_STANDARD)
+				icon_state = "punch"
+				sleep(0.5 SECONDS)
+				icon_state = "idle"
+				gibproc()
+				return
+			else
+				walk_towards(src, src.tysontarget2, tysonspeed)
+				sleep(1 SECOND)
+
+	proc/gibproc()
+		// drsingh for various cannot read null.
+		sleep(1.5 SECONDS)
+		if (get_dist(src, src.tysontarget2) <= 1)
+			for(var/mob/O in AIviewers(src, null))
+				O.show_message("<span class='alert'><B>[src]</B> KOs [tysontarget2] in one punch!</span>", 1)
+			playsound(src.loc, 'sound/impact_sounds/generic_hit_3.ogg', 30, 1, SOUND_RANGE_STANDARD)
+			logTheThing("admin", callster:client, tysontarget2, "tysongibbed [constructTarget(tysontarget2,"admin")]")
+			logTheThing("diary", callster:client, tysontarget2, "tysongibbed [constructTarget(tysontarget2,"diary")]", "admin")
+			message_admins("<span class='internal'>[callster?.client?.ckey] has tysongibbed [tysontarget2] ([tysontarget2.ckey]).</span>")
+			tysontarget2.gib()
+			sleep(0.5 SECONDS)
+			playsound(src.loc, pick('sound/misc/knockout.ogg'), 50, 0)
+			sleep(0.5 SECONDS)
+			qdel(src)
+		else
+			process()

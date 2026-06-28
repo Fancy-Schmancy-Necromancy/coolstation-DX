@@ -813,6 +813,7 @@
 			if (linked && !linked.cremating && find_tray_tube() == 1)
 				playsound(src.loc, "sound/machines/bweep.ogg", 20, 1)
 				linked.cremate()
+				src.updateDialog()
 				logTheThing("station", usr, null, "activated the tanning bed at [usr.loc.loc] ([showCoords(usr.x, usr.y, usr.z)])")
 
 		else if (href_list["timer"])

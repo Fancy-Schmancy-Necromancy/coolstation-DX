@@ -7005,6 +7005,10 @@
 /obj/stool/bar,
 /turf/floor/specialroom/bar,
 /area/station/crew_quarters/bar)
+"fev" = (
+/obj/table/auto,
+/turf/wall,
+/area/station/crew_quarters/kitchen/freezer)
 "fez" = (
 /obj/structure/girder/displaced,
 /turf/floor/airless/plating/scorched,
@@ -82400,7 +82404,7 @@ swO
 dGg
 dGg
 hWA
-dGg
+fev
 dGg
 aDM
 aDM

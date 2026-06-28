@@ -470,6 +470,7 @@ var/datum/preMapLoad/preMapLoad = new
 #include "code\lists\jobs.dm"
 #include "code\lists\nt.dm"
 #include "code\mob\dead.dm"
+#include "code\mob\gnarsh.dm"
 #include "code\mob\input.dm"
 #include "code\mob\living.dm"
 #include "code\mob\melee_attack_procs.dm"
